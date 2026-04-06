@@ -106,3 +106,8 @@ lookup-tables
 my-pt-states.txt
 gmon.out
 prof_output
+build/
+dist/
+*.spec
+rubikscubennnsolver/ida_search_via_graph.exe
+rubikscubennnsolver/*.o
