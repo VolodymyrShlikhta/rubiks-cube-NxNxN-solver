@@ -3,12 +3,9 @@ import datetime as dt
 import hashlib
 import json
 import logging
-import gzip
 import os
 # import resource  # removed for Windows compatibility
-import shutil
 import subprocess
-import urllib.request
 from pathlib import Path
 from subprocess import call
 from typing import Dict, List, TextIO, Tuple
@@ -424,22 +421,14 @@ def download_file_if_needed(filename: str) -> None:
         filename: the file to download
     """
 
-    if not os.path.exists(filename):
-        filename_gz = filename + ".gz"
-        filename_gz_no_dir = filename_gz.split("/")[-1]
-
-        if not os.path.exists(filename_gz):
-            url = f"https://rubiks-cube-lookup-tables.s3.amazonaws.com/{filename_gz_no_dir}"
-            logger.info(f"Downloading table via urllib: {url}")
-            urllib.request.urlretrieve(url, filename_gz)
-
-            if not os.path.exists(filename_gz):
-                raise Exception(f"failed to download {filename_gz} via {url}")
-
-        logger.info(f"gunzip {filename_gz}")
-        with gzip.open(filename_gz, "rb") as f_in, open(filename, "wb") as f_out:
-            shutil.copyfileobj(f_in, f_out)
-        os.remove(filename_gz)
+    if os.path.isfile(filename):
+        return
+    raise FileNotFoundError(
+        "Required lookup table is missing: %s\n"
+        "This sidecar runs in offline-only mode. The host application "
+        "must ensure all required tables are present before invoking "
+        "the solver." % filename
+    )
 
 
 class LookupTable(object):
