@@ -281,12 +281,14 @@ class LookupTableIDAViaGraph(LookupTable):
         find_extra: bool = False,
         use_kociemba_string: bool = False,
     ) -> List[List[str]]:
-        cmd = ["./ida_search_via_graph"]
+        cmd = ["ida_search_via_graph.exe"]
 
         if pt_states:
             pt_states = sorted(set(pt_states))
-            pt_states_filename = (
-                "/tmp/pt-states-" + "".join(random.choice(string.ascii_uppercase) for i in range(6)) + ".txt"
+            import tempfile
+            pt_states_filename = os.path.join(
+                tempfile.gettempdir(),
+                "pt-states-" + "".join(random.choice(string.ascii_uppercase) for i in range(6)) + ".txt",
             )
 
             for index, pt in enumerate(self.prune_tables):
