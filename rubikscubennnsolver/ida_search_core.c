@@ -10,11 +10,13 @@
 void LOG(const char *fmt, ...) {
     char date[20];
     struct timeval tv;
+    time_t tv_sec_t;
     va_list args;
 
     /* print the progname, version, and timestamp */
     gettimeofday(&tv, NULL);
-    strftime(date, sizeof(date) / sizeof(*date), "%Y-%m-%dT%H:%M:%S", gmtime(&tv.tv_sec));
+    tv_sec_t = (time_t)tv.tv_sec;
+    strftime(date, sizeof(date) / sizeof(*date), "%Y-%m-%dT%H:%M:%S", gmtime(&tv_sec_t));
     printf("[%s.%03d] ", date, (int)tv.tv_usec / 1000);
 
     /* printf like normal */
