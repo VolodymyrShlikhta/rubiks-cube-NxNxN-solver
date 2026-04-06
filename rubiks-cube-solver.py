@@ -10,7 +10,7 @@ Solve any size rubiks cube:
 import argparse
 import datetime as dt
 import logging
-import resource
+# import resource  # removed for Windows compatibility
 import sys
 from math import sqrt
 
@@ -159,7 +159,7 @@ if args.min_memory:
     print("****************************************\n\n")
 
 logger.info("rubiks-cube-solver.py end")
-logger.info(f"Memory : {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss:,} bytes")
+# logger.info(f"Memory : ... bytes")  # resource removed for Windows compatibility
 logger.info(f"Time   : {end_time - start_time}")
 logger.info("")
 

@@ -4,7 +4,7 @@ import hashlib
 import json
 import logging
 import os
-import resource
+# import resource  # removed for Windows compatibility
 import shutil
 import subprocess
 from pathlib import Path
@@ -663,7 +663,7 @@ class LookupTable(object):
         Load a lookup table into a dictionary
         """
         # logger.info("%s: begin preload cache dict" % self)
-        memory_pre = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        memory_pre = 0  # resource.getrusage removed for Windows compatibility
 
         if "dummy" in self.filename:
             self.cache = {}
@@ -681,7 +681,7 @@ class LookupTable(object):
                     self.cache[state] = steps
 
         self.preloaded_cache_dict = True
-        memory_post = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        memory_post = 0  # resource.getrusage removed for Windows compatibility
         memory_delta = memory_post - memory_pre
         logger.info(f"{self}: end preload cache dict ({memory_delta} bytes delta, {memory_post} bytes total)")
 
@@ -690,7 +690,7 @@ class LookupTable(object):
         Load a lookup table into a set
         """
         # logger.info("%s: begin preload cache set" % self)
-        memory_pre = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        memory_pre = 0  # resource.getrusage removed for Windows compatibility
         states = []
 
         if "dummy" in self.filename:
@@ -707,7 +707,7 @@ class LookupTable(object):
 
         self.cache_set = set(states)
         self.preloaded_cache_set = True
-        memory_post = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        memory_post = 0  # resource.getrusage removed for Windows compatibility
         memory_delta = memory_post - memory_pre
         logger.info(f"{self}: end preload cache set ({memory_delta} bytes delta, {memory_post} bytes total)")
 
@@ -716,7 +716,7 @@ class LookupTable(object):
         Load a lookup table into a string
         """
         # logger.info("%s: begin preload cache string" % self)
-        memory_pre = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        memory_pre = 0  # resource.getrusage removed for Windows compatibility
         self.cache_string = None
 
         if "dummy" in self.filename:
@@ -727,7 +727,7 @@ class LookupTable(object):
                 self.cache_string = fh.read()
 
         self.preloaded_cache_string = True
-        memory_post = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        memory_post = 0  # resource.getrusage removed for Windows compatibility
         memory_delta = memory_post - memory_pre
         logger.info(
             f"{self}: end preload cache string ({memory_delta} bytes delta, {memory_post} bytes total, {len(self.cache_string)} characters)"
